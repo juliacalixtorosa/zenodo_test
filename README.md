@@ -1,0 +1,110 @@
+# Refactoring of Methods in the Cortext Platform
+
+**Cortext** was launched in 2008 by researchers in Science and Technology Studies. It provides computational methods for document analysis in the humanities and social sciences, serving over a thousand users across 50 countries each year, with roughly 44,000 analyses, most of which are carried out through the **Cortext Manager** application.
+
+This package gathers the **raw data from the analysis and metric collection** before and after the refactoring of the [corpus_explorer method](https://gitlab.com/cortext/cortext-methods/corpus-explorer) of the Cortext platform. This method is responsible for filtering database tables selected by users and generating visualizations of the filtered content.
+
+---
+
+## Cataloging of Refactorings
+
+The file **(cataloging_corpus_explorer.ods)** contains a spreadsheet tracking the cataloged refactorings.
+Each commit and modification was analyzed, and for each change, the corresponding **refactoring type** was assigned based on the alteration.
+
+---
+
+## Code Metrics Collection
+
+We used the [**Radon**](https://radon.readthedocs.io/en/latest/index.html) tool to collect code metrics for the method **before and after refactoring**.
+
+> **Note:** Before running any Radon command, make sure the corresponding code files are available in the directory where the command is executed.
+
+### Before Refactoring
+
+Due to the Python 2 code in `corpus_explorer`, it was necessary to use an older version of Radon that still supports Python 2 (**radon==5.1.0**).
+
+**Setup:**
+
+1. Create a Python 2 virtual environment:
+
+   ```bash
+   python2 -m venv venv
+   source venv/bin/activate
+   ```
+2. Install Radon:
+
+   ```bash
+   pip install radon==5.1.0
+   ```
+3. Run the following commands to collect metrics:
+
+**Cyclomatic Complexity:**
+
+```bash
+radon cc --total-average -s --order SCORE -j -O <output_file.json> corpus_explorer.py
+```
+
+**Raw Metrics (lines of code):**
+
+```bash
+radon raw -s -j -O <output_file.json> corpus_explorer.py
+```
+
+**Maintainability Index:**
+
+```bash
+radon mi -s -j -m -O <output_file.json> corpus_explorer.py
+```
+
+**Halstead Metrics:**
+
+```bash
+radon hal -f --include-ipynb --ipynb-cells -O <output_file.ipynb> corpus_explorer.py
+```
+
+All metrics before refactoring were analyzed on the `corpus_explorer.py` file from this [commit](https://gitlab.com/cortext/cortext-methods/corpus-explorer/-/commit/be0718bb3345c9d741f25273e013d372118dd637).
+
+---
+
+### After Refactoring
+
+For the refactored version, the same commands were used on the **latest version** of the `corpus_explorer` module.
+
+**Setup:**
+
+1. Create a Python 3 virtual environment:
+
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+2. Install Radon:
+
+   ```bash
+   pip install radon==6.0.1
+   ```
+3. Run the commands below:
+
+**Cyclomatic Complexity:**
+
+```bash
+radon cc --total-average -s --order SCORE -j -O <output_file.json> corpus_explorer/
+```
+
+**Raw Metrics (lines of code):**
+
+```bash
+radon raw -s -j -O <output_file.json> corpus_explorer/
+```
+
+**Maintainability Index:**
+
+```bash
+radon mi -s -j -O <output_file.json> corpus_explorer/
+```
+
+**Halstead Metrics:**
+
+```bash
+radon hal -j -O <output_file.json> corpus_explorer/
+```
